@@ -9,12 +9,25 @@ const rl = readline.createInterface({
 });
 
 async function askGemini(topic) {
+    const prompt = `
+You are a research assistant. A user wants to research this topic: "${topic}"
+
+Please provide:
+1. A one sentence summary of the topic
+2. Five key sub-questions worth investigating
+3. A suggested research plan with three steps
+
+Format your response clearly with headers for each section.
+`;
+
     const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
-        contents: `Tell me about this topic in 3 sentences: ${topic}`,
+        contents: prompt,
     });
-    console.log("\nGemini says:\n");
+
+    console.log("\n--- RESEARCH BRIEF ---\n");
     console.log(response.text);
+    console.log("--- END ---\n");
 }
 
 rl.question("Enter a topic to research: ", async (topic) => {
